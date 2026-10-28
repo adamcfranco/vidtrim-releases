@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>Trim any video from the right-click menu.</b><br>
-  A tiny, native Windows app: right-click a video, drag two handles, save.
+  A tiny, native Windows app: right-click a video, drag the handles, save.
 </p>
 
 <p align="center">
@@ -18,14 +18,17 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/screenshot.webp" alt="VidTrim screenshot: video preview, transport controls and a timeline with waveform, filmstrip and trim handles">
+  <img src="docs/assets/screenshot.webp" alt="VidTrim screenshot: video preview, a Saved notification, transport controls and a timeline with two kept segments around a removed middle part">
 </p>
 
 ## Features
 
 - **Right-click → Trim...** on MP4, MKV, MOV, WebM, AVI and 25+ other video types.
-- **Lossless** cuts copy the original streams: no re-encode, no quality loss, done in seconds. The timeline marks the keyframe the cut starts from.
-- **Exact** cuts start on the exact frame and re-encode on your GPU (NVIDIA NVENC, AMD AMF, Intel Quick Sync, or Media Foundation).
+- **Lossless** cuts copy the original streams: no re-encode, no quality loss, done in seconds. The timeline marks the keyframe each cut starts from.
+- **Exact** cuts start and end on the exact frame. For H.264 and HEVC it's a smart cut: only the frames around each cut are re-encoded and everything in between is copied untouched. Other formats re-encode on your GPU (NVIDIA NVENC, AMD AMF, Intel Quick Sync, or Media Foundation).
+- **Cut out the middle**: split at the playhead and delete parts, or keep several highlights. The kept parts are joined into one file.
+- **Rotate and flip** without re-encoding (written as orientation metadata), and **crop** to 9:16, 4:5, 1:1 or 16:9 (re-encodes).
+- **Copy frame**: right-click the video or press <kbd>Ctrl</kbd> + <kbd>C</kbd> to copy the current frame at full resolution.
 - Plays almost anything with hardware decoding: H.264, HEVC 10-bit, AV1, VP9, ProRes and more, up to 4K60, with HDR tone-mapped for preview.
 - Filmstrip and waveform timeline with zoom, frame stepping and keyboard shortcuts.
 - Audio follows your output device and compensates for Bluetooth latency; the delay is adjustable for each device.
@@ -50,6 +53,12 @@ To uninstall, go to **Settings → Apps → Installed apps → VidTrim → Unins
 | Step one frame | <kbd>←</kbd> <kbd>→</kbd> |
 | Jump one second | <kbd>Shift</kbd> + <kbd>←</kbd> <kbd>→</kbd> |
 | Set in / out at the playhead | <kbd>I</kbd> <kbd>O</kbd> |
+| Split at the playhead | <kbd>S</kbd> |
+| Remove the selected segment | <kbd>Del</kbd> |
+| Keep a removed part again | <kbd>A</kbd> |
+| Rotate right / left | <kbd>R</kbd> / <kbd>Shift</kbd> + <kbd>R</kbd> |
+| Flip horizontal / vertical | <kbd>H</kbd> / <kbd>V</kbd> |
+| Copy frame | <kbd>Ctrl</kbd> + <kbd>C</kbd> |
 | Save / Save as | <kbd>Ctrl</kbd> + <kbd>S</kbd> / <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> |
 | Lossless / Exact | <kbd>L</kbd> |
 | Volume / mute | <kbd>↑</kbd> <kbd>↓</kbd> / <kbd>M</kbd> |

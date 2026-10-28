@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VidTrim — trim videos from the right-click menu</title>
-<meta name="description" content="VidTrim is a tiny, native Windows app: right-click any video, drag two handles, save. Lossless cuts in seconds or frame-accurate GPU re-encodes.">
+<meta name="description" content="VidTrim is a tiny, native Windows app: right-click any video, drag the handles, save. Lossless cuts in seconds, frame-accurate smart cuts, cut out the middle, rotate and crop.">
 <meta property="og:title" content="VidTrim — trim videos from the right-click menu">
-<meta property="og:description" content="Right-click a video, drag two handles, save. Native, instant, lossless. Free for Windows 10 &amp; 11.">
+<meta property="og:description" content="Right-click a video, drag the handles, save. Cut out the middle, rotate, crop. Native, instant, lossless. Free for Windows 10 &amp; 11.">
 <meta property="og:image" content="https://adamcfranco.github.io/vidtrim-releases/assets/og.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -152,12 +152,14 @@
   .mini .strip span { flex: 1; border-radius: 4px; background: linear-gradient(135deg, #2a1052, #7b2ff7 45%, #ff4d6d 75%, #ffb38a); opacity: .9; }
   .mini .strip span:nth-child(2n) { background: linear-gradient(200deg, #1d0b3a, #6c2bd9 40%, #ff3d6e 80%); }
   .mini .dim { position: absolute; top: 0; bottom: 0; background: rgba(0, 0, 0, 0.62); }
-  .mini .sel { position: absolute; top: 4px; bottom: 4px; left: 26%; right: 22%; border: 2px solid var(--accent); border-radius: 7px; }
+  .mini .sel { position: absolute; top: 4px; bottom: 4px; border: 2px solid var(--accent); border-radius: 7px; }
   .mini .sel::before, .mini .sel::after {
-    content: ""; position: absolute; top: -2px; bottom: -2px; width: 10px; background: var(--accent); border-radius: 5px;
+    content: ""; position: absolute; top: -2px; bottom: -2px; width: 9px; background: var(--accent); border-radius: 5px;
   }
-  .mini .sel::before { left: -10px; }
-  .mini .sel::after { right: -10px; }
+  .mini .sel::before { left: -2px; }
+  .mini .sel::after { right: -2px; }
+  .mini .sel.idle { border-color: #3d6c99; }
+  .mini .sel.idle::before, .mini .sel.idle::after { background: #3d6c99; }
 
   .saved {
     display: flex; align-items: center; gap: 10px; padding: 12px 14px;
@@ -239,7 +241,7 @@
     <div class="wrap">
       <span class="eyebrow">Free for <b>Windows 10 &amp; 11</b></span>
       <h1>Trim any video from the <span class="grad">right-click menu</span>.</h1>
-      <p class="lede">Right-click a video, drag two handles, hit Save. VidTrim opens instantly, plays almost any format, and cuts without re-encoding, so the trim is ready in seconds.</p>
+      <p class="lede">Right-click a video, drag the handles, hit Save. Cut out the boring middle, fix a sideways phone clip or crop it for Shorts. VidTrim opens instantly, plays almost any format, and cuts without re-encoding, so the trim is ready in seconds.</p>
       <div class="cta">
         <a class="btn btn-primary" href="https://github.com/adamcfranco/vidtrim-releases/releases/latest/download/VidTrimSetup.exe">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
@@ -251,7 +253,7 @@
       <div class="shot">
         <img src="assets/screenshot.webp" width="2560" height="1600"
              srcset="assets/screenshot-1200.webp 1200w, assets/screenshot.webp 2560w" sizes="(max-width: 1128px) 100vw, 1080px"
-             alt="VidTrim with a clip open: video preview, transport controls, and a timeline with waveform, filmstrip and blue trim handles">
+             alt="VidTrim with a clip open: video preview, a Saved notification, transport controls, and a timeline with two kept segments around a removed middle part">
       </div>
     </div>
   </div>
@@ -282,13 +284,15 @@
         <div class="step">
           <div class="num">2</div>
           <h3>Drag the handles</h3>
-          <p>Scrub the filmstrip and waveform, step frame by frame, or press <kbd>I</kbd> and <kbd>O</kbd> at the playhead.</p>
+          <p>Scrub the filmstrip and waveform, step frame by frame, or press <kbd>I</kbd> and <kbd>O</kbd> at the playhead. Press <kbd>S</kbd> to split and <kbd>Del</kbd> to cut a part out.</p>
           <div class="visual">
             <div class="mini">
               <div class="strip"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-              <div class="dim" style="left:0; width:26%"></div>
-              <div class="dim" style="right:0; width:22%"></div>
-              <div class="sel"></div>
+              <div class="dim" style="left:0; width:8%"></div>
+              <div class="dim" style="left:44%; width:14%"></div>
+              <div class="dim" style="right:0; width:14%"></div>
+              <div class="sel idle" style="left:8%; right:56%"></div>
+              <div class="sel" style="left:58%; right:14%"></div>
             </div>
           </div>
         </div>
@@ -319,12 +323,27 @@
         <div class="feature">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
           <h3>Lossless in seconds</h3>
-          <p>Lossless mode copies the original streams with no re-encode and no quality loss, at disk speed. The timeline marks the keyframe the cut will start from.</p>
+          <p>Lossless mode copies the original streams with no re-encode and no quality loss, at disk speed. The timeline marks the keyframe each cut will start from.</p>
         </div>
         <div class="feature">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg></div>
-          <h3>Frame-accurate when you need it</h3>
-          <p>Exact mode cuts on the frame and re-encodes on your GPU (NVIDIA, AMD or Intel), keeping 10-bit HEVC and rotation intact.</p>
+          <h3>Frame-accurate smart cuts</h3>
+          <p>Exact mode cuts on the exact frame. For H.264 and HEVC it re-encodes only the few frames around each cut and copies the rest untouched. Other formats re-encode on your GPU (NVIDIA, AMD or Intel).</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg></div>
+          <h3>Cut out the middle</h3>
+          <p>Split at the playhead and delete what you don&rsquo;t want, or keep several highlights from one long recording. Playback skips the removed parts, and saving joins the rest into one file.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg></div>
+          <h3>Rotate, flip and crop</h3>
+          <p>Fix a sideways phone video without re-encoding, mirror it, or crop to 9:16, 4:5, 1:1 or 16:9 for Shorts, Reels and posts. Drag the crop box to frame the shot.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1"/></svg></div>
+          <h3>Copy any frame</h3>
+          <p>Right-click the video, or press <kbd>Ctrl</kbd><kbd>C</kbd>, to copy the current frame at full resolution, ready to paste into a chat, a doc or an image editor.</p>
         </div>
         <div class="feature">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></div>
@@ -362,6 +381,12 @@
         <div class="key"><span>Step one frame</span><div><kbd>&larr;</kbd><kbd>&rarr;</kbd></div></div>
         <div class="key"><span>Jump one second</span><div><kbd>Shift</kbd><kbd>&larr;</kbd><kbd>&rarr;</kbd></div></div>
         <div class="key"><span>Set in / out at playhead</span><div><kbd>I</kbd><kbd>O</kbd></div></div>
+        <div class="key"><span>Split at the playhead</span><div><kbd>S</kbd></div></div>
+        <div class="key"><span>Remove the selected segment</span><div><kbd>Del</kbd></div></div>
+        <div class="key"><span>Keep a removed part again</span><div><kbd>A</kbd></div></div>
+        <div class="key"><span>Rotate right / left</span><div><kbd>R</kbd><kbd>Shift</kbd><kbd>R</kbd></div></div>
+        <div class="key"><span>Flip horizontal / vertical</span><div><kbd>H</kbd><kbd>V</kbd></div></div>
+        <div class="key"><span>Copy frame</span><div><kbd>Ctrl</kbd><kbd>C</kbd></div></div>
         <div class="key"><span>Save / Save as</span><div><kbd>Ctrl</kbd><kbd>S</kbd></div></div>
         <div class="key"><span>Lossless / Exact</span><div><kbd>L</kbd></div></div>
         <div class="key"><span>Volume / mute</span><div><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>M</kbd></div></div>
@@ -388,7 +413,15 @@
         </details>
         <details>
           <summary>Lossless or Exact: which should I use?</summary>
-          <p>Lossless copies the video as-is, so it&rsquo;s instant and keeps full quality. The cut can only start on a keyframe, and VidTrim shows exactly where that is. Exact starts on the frame you chose but re-encodes the video on your GPU.</p>
+          <p>Lossless copies the video as-is, so it&rsquo;s instant and keeps full quality. Each part can only start on a keyframe, and VidTrim shows exactly where that is. Exact starts and ends on the frames you chose. For H.264 and HEVC it re-encodes only the frames between each cut and the nearest keyframe and copies everything else, so it&rsquo;s nearly as fast. Other formats are re-encoded on your GPU.</p>
+        </details>
+        <details>
+          <summary>How do I cut something out of the middle?</summary>
+          <p>Move the playhead to where the unwanted part starts and press <kbd>S</kbd> (or the scissors button), move to where it ends and press <kbd>S</kbd> again, then click the piece in between and press <kbd>Del</kbd>. Keep as many parts as you like: they&rsquo;re joined into one file when you save.</p>
+        </details>
+        <details>
+          <summary>Does rotating or cropping cost quality?</summary>
+          <p>Rotating and flipping don&rsquo;t: VidTrim writes the new orientation into the file, the way phones do, so even a Lossless save stays untouched. Cropping changes the picture itself, so it saves in Exact mode and re-encodes the video.</p>
         </details>
         <details>
           <summary>Does it need admin rights or change my files?</summary>
