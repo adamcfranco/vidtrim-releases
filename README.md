@@ -32,7 +32,7 @@
 - Plays almost anything with hardware decoding: H.264, HEVC 10-bit, AV1, VP9, ProRes and more, up to 4K60, with HDR tone-mapped for preview.
 - Filmstrip and waveform timeline with zoom, frame stepping and keyboard shortcuts.
 - Audio follows your output device and compensates for Bluetooth latency; the delay is adjustable for each device.
-- Native C++ / Direct3D 11. The executable is under 1 MB and opens instantly.
+- **Opens in under 100 ms**: the window and your video's first frame appear in under a tenth of a second, before the graphics driver has finished starting. Native C++ / Direct3D 11; the executable is under 1 MB.
 
 ## Install
 
